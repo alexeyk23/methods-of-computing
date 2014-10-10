@@ -1,28 +1,40 @@
 
 package methods;
 import java.util.Arrays;
+import java.util.Random;
 public class Methods
 {
-    
+     static int n=100;
+     static  int k=45;
+     static float[] a = new float[n+1];
+     static float[] p = new float[n+1];
+     static float[] q = new float[n+1];
+     static   float[] r = new float[n+1];
+     static  float[] b = new float[n],c= new float[n];
+     static float[] x = new float[n+1];  
 public static void main(String[] args) 
     {
-        int n=8;
-        int k=4;
-        double[] a = new double[n+1];
-        double[] p = new double[n+1];
-        double[] q = new double[n+1];
-        double[] r = new double[n+1];
-        double[] b = new double[n+1],c= new double[n+1];
-        generateSystem(n,k,a,b,c,p,q);
-        double[] x = new double[n+1];
-        Arrays.fill(x, 1);
-        generateRVector(n, k, x, a, b, c, p, q, r);
-        System.out.print(" r= "+Arrays.toString(r)+'\n');
+        
+        float range=10;
+        generateSystem(range);        
+        
+        //Arrays.fill(x, 1);
+        x[0]=0;
+        generateXInRange(range);
+        generateRVector();
+     /*   System.out.print(" b= "+Arrays.toString(b)+"\n a= "+Arrays.toString(a)+"\n c= "+Arrays.toString(c)+
+                "\n r="+Arrays.toString(r)+"\n p= "+Arrays.toString(p)+"\n q= "+Arrays.toString(q)+"\n x="+Arrays.toString(x));
+        */
+        try
+        {
         //step1
         for (int i = 1; i <= k-1; i++) 
         {
-          b[i]/=a[i]; 
-          r[i]/=a[i];
+          float revert=1/a[i];
+          
+          b[i]*=revert; 
+          r[i]*=revert;
+          
           a[i]=1;
           int incI=i+1;
           a[incI]-=b[i]*c[i];
@@ -42,8 +54,9 @@ public static void main(String[] args)
        for (int i = n; i>=k+2; i--)
         {
             int decI=i-1;
-            c[decI]/=a[i];
-            r[i]/=a[i];
+            float revert=1/a[i];
+            c[decI]*=revert;
+            r[i]*=revert;
             a[i]=1;
             a[decI]-=c[decI]*b[decI];
             r[decI]-=r[i]*b[decI];
@@ -80,41 +93,77 @@ public static void main(String[] args)
             a[decI]=1;
         }      
        //step 5
-       for (int i = k+1; i < n; i++) 
-       {
-         int incI=i+1;
-         r[incI]-=r[i]*c[i]; 
-         c[i]=0;
-         r[incI]/=a[incI];
-         a[incI]=1;
-       }      
-        
-       System.out.print(" b= "+Arrays.toString(b)+"\n a= "+Arrays.toString(a)+"\n c= "+Arrays.toString(c)+
+        for (int i = k+1; i < n; i++) 
+        {
+          int incI=i+1;
+          r[incI]-=r[i]*c[i]; 
+          c[i]=0;
+          r[incI]/=a[incI];
+          a[incI]=1;
+        }      
+        }
+        catch(Exception e)
+        {
+            System.err.println(e.getMessage());
+        }
+       /*System.out.print(" b= "+Arrays.toString(b)+"\n a= "+Arrays.toString(a)+"\n c= "+Arrays.toString(c)+
                 "\n r="+Arrays.toString(r)+"\n p= "+Arrays.toString(p)+"\n q= "+Arrays.toString(q));
-        double[] solution = new double[n+1];
+        */
+        float[] solution = new float[n+1];
         for (int i = 1; i < n+1; i++) 
         {
             solution[i]=r[n-i+1];
         }      
-        System.out.print(getAvg(solution, x, n));
+        System.out.print(Arrays.toString(solution)+"\n"+Arrays.toString(x)+"\n "+getAvg(solution));
+        
     }
-    static void generateSystem(int n,int k, double [] a,double [] b,double [] c,double [] p,double [] q)
+    static void generateSystem(float range)
     {
             
-        Arrays.fill(a, 2);
+       Random r = new Random();
+        for (int i = 1; i<n; i++)
+        {
+            a[i] = (float) r.nextDouble()* 2 * range - range;
+            b[i] = (float) r.nextDouble() * 2 * range - range;
+            c[i] = (float) r.nextDouble() * 2 * range - range;
+        }
+        a[n]=(float) r.nextDouble()* 2 * range - range;
+        for (int i = 1; i < n+1; i++) 
+        {
+          p[i]=(float) r.nextDouble()* 2 * range - range;
+          q[i]=(float) r.nextDouble()* 2 * range - range;
+        }
+        p[k]=a[k];
+        p[k-1]=c[k-1];
+        p[k+1]=b[k];    
+        
+        q[k+1]=a[k+1];
+        q[k]=c[k];
+        q[k+2]=b[k+1];
+       /* Arrays.fill(a, 2);
         a[1]=1;a[n]=1;
         Arrays.fill(b, 1);
         Arrays.fill(c, 1);
         Arrays.fill(p, 1);
         Arrays.fill(q, 1);
         q[k+1]=2;
-        p[k]=2;    
+        p[k]=2;   */ 
     }    
-    static void generateRVector(int n,int k,double[] x,double[]a,double [] b,double [] c,double [] p,double [] q,double[] r)
+    static void generateXInRange(float range)
+    {  
+        Random r = new Random();    
+        for (int i = 1; i < x.length; i++)         
+            x[i] = (float) r.nextDouble()* 2 * range - range;
+        
+        
+    }
+    static void generateRVector()
     {
          for (int i = 2; i < n; i++) 
          {
-             r[i]=b[i-1]*x[n-i]+a[i]*x[n-i+1]+c[i-1]*x[n-i+2];
+             r[i]=b[i]*x[n-i]+
+                  a[i]*x[n-i+1]+
+                  c[i-1]*x[n-i+2];
          }
          r[k]=0;
          r[k+1]=0;
@@ -124,11 +173,11 @@ public static void main(String[] args)
            r[k+1]+=q[i]*x[n-i+1];
          }
          r[1]= b[1]*x[n-1]+a[1]*x[n];
-         r[n]=a[n]*x[1]+c[n]*x[2];
+         r[n]=a[n]*x[1]+c[n-1]*x[2];
     }
-    static double getAvg(double[] solution, double[] x,int n) // Вычисление погрешности
+    static float getAvg(float[] solution) // Вычисление погрешности
     {
-        double res = 0;
+        float res = 0;
         for (int i = 1; i < n+1; i++)
         {
                 if (x[i] != 0)
