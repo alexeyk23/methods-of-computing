@@ -17,8 +17,8 @@ public static void main(String[] args)
         double[] x = new double[n+1];
         Arrays.fill(x, 1);
         generateRVector(n, k, x, a, b, c, p, q, r);
-        System.out.print(" r= "+Arrays.toString(r));
-        /*
+        System.out.print(" r= "+Arrays.toString(r)+'\n');
+        //step1
         for (int i = 1; i <= k-1; i++) 
         {
           b[i]/=a[i]; 
@@ -38,6 +38,7 @@ public static void main(String[] args)
           r[k+1]-=r[i]*q[i];
           q[i]=0;
         }        
+       // step2
        for (int i = n; i>=k+2; i--)
         {
             int decI=i-1;
@@ -57,6 +58,7 @@ public static void main(String[] args)
             r[k]-=r[i]*p[i];
             p[i]=0;
         }
+       //step 3
         int incK=k+1;
         p[incK]/=p[k];
         r[k]/=p[k];
@@ -67,7 +69,8 @@ public static void main(String[] args)
         r[incK]/=q[incK]; 
         q[incK]=1;
         r[k]-=p[incK]*r[incK]; 
-        p[incK]=0;          
+        p[incK]=0;   
+        //step 4
         for (int i = k; i >= 2; i--) 
         {
             int decI=i-1;
@@ -75,7 +78,8 @@ public static void main(String[] args)
             b[decI]=0;
             r[decI]/=a[decI]; 
             a[decI]=1;
-        }       
+        }      
+       //step 5
        for (int i = k+1; i < n; i++) 
        {
          int incI=i+1;
@@ -87,10 +91,12 @@ public static void main(String[] args)
         
        System.out.print(" b= "+Arrays.toString(b)+"\n a= "+Arrays.toString(a)+"\n c= "+Arrays.toString(c)+
                 "\n r="+Arrays.toString(r)+"\n p= "+Arrays.toString(p)+"\n q= "+Arrays.toString(q));
-       double we=0;
-       for (int i = 1; i < n+1; i++)        
-            we+=r[i];               
-       System.out.println("\n"+(we+r[k]));*/
+        double[] solution = new double[n+1];
+        for (int i = 1; i < n+1; i++) 
+        {
+            solution[i]=r[n-i+1];
+        }      
+        System.out.print(getAvg(solution, x, n));
     }
     static void generateSystem(int n,int k, double [] a,double [] b,double [] c,double [] p,double [] q)
     {
@@ -119,6 +125,18 @@ public static void main(String[] args)
          }
          r[1]= b[1]*x[n-1]+a[1]*x[n];
          r[n]=a[n]*x[1]+c[n]*x[2];
+    }
+    static double getAvg(double[] solution, double[] x,int n) // Вычисление погрешности
+    {
+        double res = 0;
+        for (int i = 1; i < n+1; i++)
+        {
+                if (x[i] != 0)
+                        res = Math.max(res, Math.abs(solution[i] - x[i]) / x[i]);
+                else
+                        res = Math.max(res, Math.abs(solution[i] - x[i]));
+        }
+        return res;
     }
 }
 
