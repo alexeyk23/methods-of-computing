@@ -3,36 +3,63 @@ package methods;
 import java.util.Arrays;
 import java.util.Random;
 public class Methods
-{
-static int n=100;
-static int k=45;
-static float[] a = new float[n+1];
-static float[] p = new float[n+1];
-static float[] q = new float[n+1];
-static float[] r = new float[n+1];
-static float[] b = new float[n],c= new float[n];
-static float[] x = new float[n+1]; 
-static float[] solution = new float[n+1];
+{    
 
 public static void main(String[] args) 
     {
-        
-        float range=10;
-        generateSystem(range);       
-        
-        //Arrays.fill(x, 1);
-        x[0]=0;
-        generateXInRange(range);
-        generateRVector();
-        SolveSystem();
-        System.out.print(Arrays.toString(solution)+"\n"+Arrays.toString(x)+"\n "+getAvg(solution));
+     int n=10;
+     int k=4;
+     float[] a = new float[n+1];
+     float[] p = new float[n+1];
+     float[] q = new float[n+1];
+     float[] r = new float[n+1];
+     float[] b = new float[n],c= new float[n];
+     float[] x = new float[n+1]; 
+     float[] solution = new float[n+1];   
+     float range=10;
+  //   generateSystem(n, k, a, b, c, p, q, range);
+ //    generateXInRange(x, range);
+ //    generateRVector(n, k, a, b, c, p, q, r, x);
+ //    SolveSystem(n, k, a, b, c, p, q, r, solution); 
+       test();
+  //   System.out.print(Arrays.toString(solution)+"\n"+Arrays.toString(x)+"\n "+getAvg(n, solution, x));
         
     }
 static void test()
-{    
-     
+{     
+   int n=10;
+   int k=4;
+    while(n<=1000)
+    {
+       
+     float[] a = new float[n+1];
+     float[] p = new float[n+1];
+     float[] q = new float[n+1];
+     float[] r = new float[n+1];
+     float[] b = new float[n],c= new float[n];
+     float[] x = new float[n+1]; 
+     float[] solution = new float[n+1];   
+     float range=10;
+    while(range<=1000)
+    {   
+        float sum=0;
+        for (int i = 0; i < 20; i++) 
+        {             
+            generateSystem(n, k, a, b, c, p, q, range);
+            generateXInRange(x, range);
+            generateRVector(n, k, a, b, c, p, q, r, x);
+            SolveSystem(n, k, a, b, c, p, q, r, solution);             
+            sum+=getAvg(n, solution, x);
+        }
+        sum/=20;            
+        System.out.println(String.format("%d | [-%f,%f] | %e ",n,range,range,sum));
+        range*=10;
+    }
+        n*=10;
+        k*=10;
+    }
 }        
-static  void SolveSystem()
+static  void SolveSystem(int n,int k,float[] a,float[] b,float[] c,float[] p,float[] q,float[] r,float[] solution)
 {
     try
         {
@@ -40,10 +67,8 @@ static  void SolveSystem()
             for (int i = 1; i <= k-1; i++) 
             {
               float revert=1/a[i];
-
               b[i]*=revert; 
               r[i]*=revert;
-
               a[i]=1;
               int incI=i+1;
               a[incI]-=b[i]*c[i];
@@ -114,14 +139,13 @@ static  void SolveSystem()
         catch(Exception e)
         {
             System.err.println(e.getMessage());
-        }      
-        solution = new float[n+1];
+        }     
         for (int i = 1; i < n+1; i++) 
         {
             solution[i]=r[n-i+1];
         }      
 }
-    static void generateSystem(float range)
+    static void generateSystem(int n,int k,float[] a,float[] b,float[] c,float[] p,float[] q,float range)
     {
             
        Random r = new Random();
@@ -153,7 +177,7 @@ static  void SolveSystem()
         q[k+1]=2;
         p[k]=2;   */ 
     }    
-    static void generateXInRange(float range)
+    static void generateXInRange(float[] x,float range)
     {  
         Random r = new Random();    
         for (int i = 1; i < x.length; i++)         
@@ -161,7 +185,7 @@ static  void SolveSystem()
         
         
     }
-    static void generateRVector()
+    static void generateRVector(int n,int k,float[] a,float[] b,float[] c,float[] p,float[] q,float[] r,float[]x)
     {
          for (int i = 2; i < n; i++) 
          {
@@ -179,7 +203,7 @@ static  void SolveSystem()
          r[1]= b[1]*x[n-1]+a[1]*x[n];
          r[n]=a[n]*x[1]+c[n-1]*x[2];
     }
-    static float getAvg(float[] solution) // Вычисление погрешности
+    static float getAvg(int n,float[] solution,float[] x) // Вычисление погрешности
     {
         float res = 0;
         for (int i = 1; i < n+1; i++)
