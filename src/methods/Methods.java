@@ -109,21 +109,25 @@ public class Methods {
                 p[i] = 0;
             }
             //step 3
+            
             int incK = k + 1;
             p[incK] /= p[k];
             r[k] /= p[k];
             p[k] = 1;
-            q[incK] -= q[k] * p[incK];
-            r[incK] -= q[k] * r[k];
+            double tmp=-q[k];
+            q[incK] += tmp * p[incK];
+            r[incK] += tmp * r[k];
             q[k] = 0;
             r[incK] /= q[incK];
             q[incK] = 1;
-            r[k] -= p[incK] * r[incK];
+            tmp=-p[incK];
+            r[k] += tmp * r[incK];
             p[incK] = 0;
             //step 4
             for (int i = k; i >= 2; i--) {
                 int decI = i - 1;
-                r[decI] -= r[i] * b[decI];
+                tmp=-r[i];
+                r[decI] += tmp * b[decI];
                 b[decI] = 0;
                 r[decI] /= a[decI];
                 a[decI] = 1;
@@ -131,7 +135,8 @@ public class Methods {
             //step 5
             for (int i = k + 1; i < n; i++) {
                 int incI = i + 1;
-                r[incI] -= r[i] * c[i];
+                tmp=-r[i];
+                r[incI] += tmp * c[i];
                 c[i] = 0;
                 r[incI] /= a[incI];
                 a[incI] = 1;
