@@ -10,21 +10,21 @@ public class Methods {
     }
 
     static void test() {
-        int n = 10;
-        int k = 4;
-        float[] a = new float[n + 1];
-        float[] p = new float[n + 1];
-        float[] q = new float[n + 1];
-        float[] r = new float[n + 1];
-        float[] b = new float[n], c = new float[n];
-        float[] x = new float[n + 1];
-        float[] solution = new float[n + 1];
-        float range = 10;
-        while (n <= 1000) {
+        int n = 100;
+        int k = 50;
+        double[] a = new double[n + 1];
+        double[] p = new double[n + 1];
+        double[] q = new double[n + 1];
+        double[] r = new double[n + 1];
+        double[] b = new double[n], c = new double[n];
+        double[] x = new double[n + 1];
+        double[] solution = new double[n + 1];
+        double range = 10;
+        while (n <= 100) {
             range = 10;
-            while (range <= 1000) {
-                float sum = 0;
-                float sum2=0;
+            while (range <= 10) {
+                double sum = 0;
+                double sum2=0;
                 for (int i = 0; i < 20; i++) {
                     generateSystem(n, k, a, b, c, p, q, range);
                     generateXInRange(x, range);                    
@@ -32,10 +32,10 @@ public class Methods {
                     SolveSystem(n, k, a.clone(), b.clone(), c.clone(), p.clone(), q.clone(), r.clone(), solution);                    
                     sum += getAvg(n, solution, x);
                    
-                    Arrays.fill(x,1);                    
-                    generateRVector(n, k, a, b, c, p, q, r, x);
-                    SolveSystem(n, k, a.clone(), b.clone(), c.clone(), p.clone(), q.clone(), r.clone(), solution); 
-                    sum2+=getAvg(n, solution, x);
+//                    Arrays.fill(x,1);                    
+//                    generateRVector(n, k, a, b, c, p, q, r, x);
+//                    SolveSystem(n, k, a.clone(), b.clone(), c.clone(), p.clone(), q.clone(), r.clone(), solution); 
+//                    sum2+=getAvg(n, solution, x);
                 }
                 sum /= 20;
                 sum2/=20;
@@ -44,22 +44,22 @@ public class Methods {
             }
             n *= 10;
             k *= 10;
-            a = new float[n + 1];
-            p = new float[n + 1];
-            q = new float[n + 1];
-            r = new float[n + 1];
-            b = new float[n];
-            c = new float[n];
-            x = new float[n + 1];
-            solution = new float[n + 1];
+            a = new double[n + 1];
+            p = new double[n + 1];
+            q = new double[n + 1];
+            r = new double[n + 1];
+            b = new double[n];
+            c = new double[n];
+            x = new double[n + 1];
+            solution = new double[n + 1];
         }
     }
 
-    static void SolveSystem(int n, int k, float[] a, float[] b, float[] c, float[] p, float[] q, float[] r, float[] solution) {
+    static void SolveSystem(int n, int k, double[] a, double[] b, double[] c, double[] p, double[] q, double[] r, double[] solution) {
         try {
             //step1
             for (int i = 1; i <= k - 1; i++) {
-                float revert = 1 / a[i];
+                double revert = 1 / a[i];
                 b[i] *= revert;
                 r[i] *= revert;
                 a[i] = 1;
@@ -70,12 +70,10 @@ public class Methods {
                 c[i] = 0;
                 tmp = -p[i];
                 p[incI] += tmp * b[i];
-                if (i == k - 2) {
-                    c[incI] = p[incI];
-                }
-                if (i != k - 1) {
-                    r[k] += r[i] * tmp;
-                }
+                if (i == k - 2) 
+                    c[incI] = p[incI];                
+                if (i != k - 1) 
+                    r[k] += r[i] * tmp;                
                 p[i] = 0;
                 tmp=-b[i];
                 q[incI] += q[i] * tmp;
@@ -83,10 +81,11 @@ public class Methods {
                 r[k + 1] += tmp * q[i];
                 q[i] = 0;
             }
+           
             // step2
             for (int i = n; i >= k + 2; i--) {
                 int decI = i - 1;
-                float revert = 1 / a[i];
+                double revert = 1 / a[i];
                 c[decI] *= revert;
                 r[i] *= revert;
                 a[i] = 1;
@@ -108,8 +107,7 @@ public class Methods {
                 r[k] += r[i] * tmp;
                 p[i] = 0;
             }
-            //step 3
-            
+            //step 3            
             int incK = k + 1;
             p[incK] /= p[k];
             r[k] /= p[k];
@@ -149,18 +147,19 @@ public class Methods {
         }
     }
 
-    static void generateSystem(int n, int k, float[] a, float[] b, float[] c, float[] p, float[] q, float range) {
+    static void generateSystem(int n, int k, double[] a, double[] b, double[] c, double[] p, double[] q, double range) {
 
         Random r = new Random();
         for (int i = 1; i < n; i++) {
-            a[i] = (float) r.nextDouble() * 2 * range - range;
-            b[i] = (float) r.nextDouble() * 2 * range - range;
-            c[i] = (float) r.nextDouble() * 2 * range - range;
+            a[i] = (double)( r.nextDouble() * 2 * range - range);
+            b[i] = (double)( r.nextDouble() * 2 * range - range)*10;
+            c[i] = (double)( r.nextDouble() * 2 * range - range);
         }
-        a[n] = (float) r.nextDouble() * 2 * range - range;
-        for (int i = 1; i < n + 1; i++) {
-            p[i] = (float) r.nextDouble() * 2 * range - range;
-            q[i] = (float) r.nextDouble() * 2 * range - range;
+        a[n] = (double) r.nextDouble() * 2 * range - range;
+        for (int i = 1; i < n + 1; i++) 
+        {
+            p[i] = (double)(r.nextDouble() * 2 * range - range);
+            q[i] = (double) (r.nextDouble() * 2 * range - range);
         }
         p[k] = a[k];
         p[k - 1] = c[k - 1];
@@ -171,15 +170,15 @@ public class Methods {
         q[k + 2] = b[k + 1];     
     }
 
-    static void generateXInRange(float[] x, float range) {
+    static void generateXInRange(double[] x, double range) {
         Random r = new Random();
         for (int i = 1; i < x.length; i++) {
-            x[i] = (float) r.nextDouble() * 2 * range - range;
+            x[i] = (double)( r.nextDouble() * 2 * range - range);
         }
 
     }
 
-    static void generateRVector(int n, int k, float[] a, float[] b, float[] c, float[] p, float[] q, float[] r, float[] x) {
+    static void generateRVector(int n, int k, double[] a, double[] b, double[] c, double[] p, double[] q, double[] r, double[] x) {
         for (int i = 2; i < n; i++) {
             r[i] = b[i] * x[n - i]
                     + a[i] * x[n - i + 1]
@@ -195,9 +194,9 @@ public class Methods {
         r[n] = a[n] * x[1] + c[n - 1] * x[2];
     }
 
-    static float getAvg(int n, float[] solution, float[] x) // Вычисление погрешности
+    static double getAvg(int n, double[] solution, double[] x) // Вычисление погрешности
     {
-        float res = 0;
+        double res = 0;
         for (int i = 1; i < n + 1; i++) {
             if (x[i] != 0) {
                 res = Math.max(res, Math.abs(solution[i] - x[i]) / x[i]);
