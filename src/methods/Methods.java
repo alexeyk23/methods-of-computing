@@ -64,19 +64,23 @@ public class Methods {
                 r[i] *= revert;
                 a[i] = 1;
                 int incI = i + 1;
-                a[incI] -= b[i] * c[i];
-                r[incI] -= r[i] * c[i];
+                double tmp = -c[i];
+                a[incI] += b[i] * tmp;
+                r[incI] += r[i] * tmp;
                 c[i] = 0;
-                p[incI] -= p[i] * b[i];
+                tmp = -p[i];
+                p[incI] += tmp * b[i];
                 if (i == k - 2) {
                     c[incI] = p[incI];
                 }
                 if (i != k - 1) {
-                    r[k] -= r[i] * p[i];
+                    r[k] += r[i] * tmp;
                 }
                 p[i] = 0;
-                q[incI] -= q[i] * b[i];
-                r[k + 1] -= r[i] * q[i];
+                tmp=-b[i];
+                q[incI] += q[i] * tmp;
+                tmp=-r[i];
+                r[k + 1] += tmp * q[i];
                 q[i] = 0;
             }
             // step2
