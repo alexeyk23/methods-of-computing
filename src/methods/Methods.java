@@ -90,19 +90,22 @@ public class Methods {
                 c[decI] *= revert;
                 r[i] *= revert;
                 a[i] = 1;
-                a[decI] -= c[decI] * b[decI];
-                r[decI] -= r[i] * b[decI];
+                double tmp = -b[decI];
+                a[decI] += c[decI] * tmp;
+                r[decI] += r[i] * tmp;
                 b[decI] = 0;
-                q[decI] -= q[i] * c[decI];
+                tmp = -q[i];
+                q[decI] += tmp * c[decI];
                 if (i == k + 3) {
                     b[i - 2] = q[decI];
                 }
                 if (i != k + 2) {
-                    r[k + 1] -= r[i] * q[i];
+                    r[k + 1] += r[i] * tmp;
                 }
                 q[i] = 0;
-                p[decI] -= p[i] * c[decI];
-                r[k] -= r[i] * p[i];
+                tmp=-p[i];
+                p[decI] += tmp * c[decI];
+                r[k] += r[i] * tmp;
                 p[i] = 0;
             }
             //step 3
