@@ -1,17 +1,16 @@
 package methods;
 
-import java.util.Arrays;
 import java.util.Random;
 
 public class Methods {
 
-    public static void main(String[] args) {
+  /*  public static void main(String[] args) {
         test();
     }
-
+*/
     static void test() {
         int n = 100;
-        int k = 50;
+        int k = n/2;
         double[] a = new double[n + 1];
         double[] p = new double[n + 1];
         double[] q = new double[n + 1];
@@ -43,7 +42,7 @@ public class Methods {
                 range *= 10;
             }
             n *= 10;
-            k *= 10;
+            k= n/2;
             a = new double[n + 1];
             p = new double[n + 1];
             q = new double[n + 1];
@@ -58,6 +57,12 @@ public class Methods {
     static void SolveSystem(int n, int k, double[] a, double[] b, double[] c, double[] p, double[] q, double[] r, double[] solution) {
         try {
             //step1
+            double rK=r[k];
+            double rKINC = r[k+1];
+            double max=0.0;
+            double[] saveP = new double[p.length];
+            double[] saveQ = new double[q.length];
+                
             for (int i = 1; i <= k - 1; i++) {
                 double revert = 1 / a[i];
                 b[i] *= revert;
@@ -71,17 +76,26 @@ public class Methods {
                 tmp = -p[i];
                 p[incI] += tmp * b[i];
                 if (i == k - 2) 
-                    c[incI] = p[incI];                
-                if (i != k - 1) 
-                    r[k] += r[i] * tmp;                
+                    c[incI] = p[incI];   
+                if(Math.abs(r[i] * tmp) > max)
+                    max=Math.abs(r[i] * tmp);
+                saveP[i]=tmp;
+               // if (i != k - 1) 
+               //     rK += r[i] * tmp;                
                 p[i] = 0;
                 tmp=-b[i];
                 q[incI] += q[i] * tmp;
                 tmp=-r[i];
-                r[k + 1] += tmp * q[i];
+               // rKINC += tmp * q[i];
                 q[i] = 0;
-            }
+            }            
            
+            for (int i = 1; i <= k-1; i++) 
+            {
+               double tmp = r[i]/max* saveP[i];
+               rK+=tmp;
+            }
+            rK*=max;
             // step2
             for (int i = n; i >= k + 2; i--) {
                 int decI = i - 1;
@@ -99,12 +113,12 @@ public class Methods {
                     b[i - 2] = q[decI];
                 }
                 if (i != k + 2) {
-                    r[k + 1] += r[i] * tmp;
+                    rKINC += r[i] * tmp;
                 }
                 q[i] = 0;
                 tmp=-p[i];
                 p[decI] += tmp * c[decI];
-                r[k] += r[i] * tmp;
+                rK += r[i] * tmp;
                 p[i] = 0;
             }
             //step 3            
@@ -140,7 +154,7 @@ public class Methods {
                 a[incI] = 1;
             }
         } catch (Exception e) {
-            System.err.println(e.getMessage());
+            System.out.println("!!!!!!!!!!!!!"+e.getMessage());
         }
         for (int i = 1; i < n + 1; i++) {
             solution[i] = r[n - i + 1];
