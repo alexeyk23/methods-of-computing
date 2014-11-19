@@ -164,7 +164,8 @@ public class Methods {
     static void generateSystem(int n, int k, double[] a, double[] b, double[] c, double[] p, double[] q, double range) {
 
         Random r = new Random();
-        for (int i = 1; i < n; i++) {
+        for (int i = 1; i < n; i++) 
+        {
             a[i] = (double)( r.nextDouble() * 2 * range - range);
             b[i] = (double)( r.nextDouble() * 2 * range - range)*10;
             c[i] = (double)( r.nextDouble() * 2 * range - range);
