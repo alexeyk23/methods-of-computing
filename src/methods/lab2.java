@@ -20,7 +20,8 @@ public class lab2 {
             c = new double[N + 1][N + 1];
     public static double[][] p = new double[N + 1][2 * L];
     public static double[] array = new double[N * 2 * L + 1];
-    
+    public static double[] arrayB = new double[N * 2 * L + 1];
+    public static double[] arrayC = new double[N * 2 * L + 1];
     public static void main(String[] args) {
         Random r = new Random();
         for (int i = 1; i <= N; i++) 
@@ -29,7 +30,8 @@ public class lab2 {
             {
                a[i][j] = r.nextDouble()*10;
                p[i][j-i+L]=a[i][j];
-               array[i+N*(j-i+L)]=a[i][j];
+               array[getIndex(i, j)]=a[i][j];
+               arrayC[getIndex(i, i)]=1;
             }            
         }
         for (int i = 1; i <= N; i++) 
@@ -40,23 +42,29 @@ public class lab2 {
         for (int j = 1; j <= N; j++) {
 
             for (int i = j; i <= kN(j); i++) {
-                double s = a[i][j];
+              //  double s = a[i][j];
+                double s = array[getIndex(i, j)];
                 for (int k = k0(i); k <=j-1; k++) {
-                    s -= b[i][k] * c[k][j];
+                    //s -= b[i][k] * c[k][j];
+                   s-= arrayB[getIndex(i, k)]*arrayC[getIndex(k, j)];
                 }
-                b[i][j] = s;
+             //   b[i][j] = s;
+                arrayB[getIndex(i, j)]=s;
             }
             for (int i = j + 1; i <= kN(j); i++) {
-                double s = a[j][i];
+                //double s = a[j][i];
+                 double s = array[getIndex(j, i)];
                 for (int k = k0(i); k <= j - 1; k++) {
-                    s -= b[j][k] * c[k][i];
+                    //s -= b[j][k] * c[k][i];
+                    s-=arrayB[getIndex(j,k)]*arrayC[getIndex(k, i)];
                 }
-                c[j][i] = s / b[j][j];
+               // c[j][i] = s / b[j][j];
+                arrayC[getIndex(j, i)]=s/arrayB[getIndex(j, j)];
             }
         }
         
         
-        for (int i = 1; i <= N; i++) {
+      /*  for (int i = 1; i <= N; i++) {
             for (int j = 1; j <= N; j++) {
                 System.out.print(String.format("%.3f ",b[i][j]));
             }
@@ -68,18 +76,23 @@ public class lab2 {
                 System.out.print(String.format("%.3f ",c[i][j]));
             }
             System.out.println();
-        }
+        }*/
 //        
-//        for (int i = 1; i <=N; i++) 
-//        {         
-//            for (int j = 1; j < 2*L; j++) 
-//            {
-//                 System.out.print(array[i+N*j]+" ");
-//            }
-//            System.out.println();            
-//        }
+      /*  for (int i = 1; i <=N; i++) 
+        {         
+            for (int j = 1; j < 2*L; j++) 
+            {
+                 System.out.print(String.format("%.3f ",arrayB[i+N*j]));
+            }
+            System.out.println();            
+        }*/
     }
-
+    public static int getIndex(int i,int j)
+    {
+        return i+N*(j-i+L);
+    }
+            
+           
     public static int k0(int index) {
         if (index <= L) {
             return 1;
