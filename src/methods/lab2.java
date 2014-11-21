@@ -5,6 +5,7 @@
  */
 package methods;
 
+import java.util.Arrays;
 import java.util.Random;
 
 /**
@@ -27,7 +28,7 @@ public class lab2 {
     static int N = 7;
     public static void main(String[] args) 
     {
-        Random r = new Random();
+        test();
 //        for (int i = 1; i <= N; i++) 
 //        {
 //            for (int j = k0(i); j <= kN(i); j++) 
@@ -49,6 +50,57 @@ public class lab2 {
 //        }
 //        System.out.println(s+" "+f[1]);
        
+    }
+    static void test()
+    {
+      
+        Random r = new Random();      
+        double range=10;     
+        int countTest=10;   
+        double sumAvg=0.0;
+        int p=10;
+        for (int i = 0; i < 4; i++) 
+        {
+            if(i>1)
+            {
+                p=100;
+            }
+           N=r.nextInt(9*p)+4;
+           L=(int)Math.round((double)N/10)+1;
+           double[] system = new double[N * 2 * L + 1];      
+           double[] f = new double[N+1];      
+           double[] solution = new double[N+1];
+           double[] x = new double[N+1];
+           sumAvg=0;          
+           int saveL = L;
+            for (int j = 0; j < countTest; j++)                
+            {
+             generateSystem(N, range, system);
+             generateXInRange(x, range);
+             generateFVector(N, f, system, x);
+             Haleckiy(N, L, system, f, solution); 
+             sumAvg+=getAvg(N, solution, x);
+            }
+            double lDivN = (double)saveL/(double)N;           
+            System.out.println(String.format("%d | %f | %e ", N,lDivN,sumAvg/countTest));
+            L=2*L+1;
+            system = new double[N * 2 * L + 1];      
+            f = new double[N+1];      
+            solution = new double[N+1];
+            x = new double[N+1];
+            sumAvg=0;
+            for (int j = 0; j < countTest; j++) 
+            {             
+             generateSystem(N, range, system);
+             generateXInRange(x, range);
+             generateFVector(N, f, system, x);
+             Haleckiy(N, L, system, f, solution);
+             sumAvg+=getAvg(N, solution, x);   
+            }
+           lDivN = (double)L/(double)N; 
+           System.out.println(String.format("%d | %f | %e ", N,lDivN,sumAvg/countTest));
+        }
+        
     }
     static  void Haleckiy(int N,int L,double[] system, double[] f, double[] solution)
     {
@@ -111,9 +163,11 @@ public class lab2 {
     }
     static  void  generateFVector(int N,double[] f, double[] system,double[] x)
     {
+         Arrays.fill(f, 0); 
          for (int i = 1; i <= N; i++)
          {            
-            for (int j = k0(i); j <= kN(i); j++) {
+            for (int j = k0(i); j <= kN(i); j++) 
+            {
                     f[i]+=system[getIndex(i, j)]*x[j];
             }
          }
