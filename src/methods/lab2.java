@@ -13,47 +13,15 @@ import java.util.Random;
  * @author admin
  */
 public class lab2 {
-
-    
-   /* public static double[][] a =new double[N+1][N+1],//new double[][]{{0, 0, 0, 0}, {0, 2, 10, 0}, {0, 3, 19, 12}, {0, -1, 1, 16}},
-            b = new double[N + 1][N + 1],
-            c = new double[N + 1][N + 1];*/    
-  //  public static double[] array = new double[N * 2 * L + 1];
-   // public static double[] arrayB = new double[N * 2 * L + 1];
-   // public static double[] arrayC = new double[N * 2 * L + 1];
- //   public static double[] f = new double[N+1];
- //   public static double[] y = new double[N+1];
- //   public static double[] x = new double[N+1];
     static int L = 3;
     static int N = 7;
     public static void main(String[] args) 
     {
-        test();
-//        for (int i = 1; i <= N; i++) 
-//        {
-//            for (int j = k0(i); j <= kN(i); j++) 
-//            {                       
-//               array[getIndex(i, j)]=r.nextDouble()*10;
-//               arrayC[getIndex(i, i)]=1;
-//            }            
-//        }       
-//        for (int i = 1; i <= N; i++) {
-//            f[i]=r.nextDouble()*10;
-//        }
-//        
-//        double s= 0;
-//        int i =1;
-//        for (int j = k0(1); j <= kN(1); j++) 
-//        {
-//            s+=x[j]*array[getIndex(1, j)];
-//         //   i++;
-//        }
-//        System.out.println(s+" "+f[1]);
-       
+        //test();
+        goodMatrixTest();
     }
-    static void test()
-    {
-      
+    static void test()    
+    {      
         Random r = new Random();      
         double range=10;     
         int countTest=10;   
@@ -100,6 +68,38 @@ public class lab2 {
            lDivN = (double)L/(double)N; 
            System.out.println(String.format("%d | %f | %e ", N,lDivN,sumAvg/countTest));
         }
+        
+    }
+    static void goodMatrixTest()
+    {
+        Random r = new Random();        
+        int countTest=10;
+        int p = 10;
+        for (int j = 0; j < 4; j++) 
+        {    
+            double sum = 0;
+            if(j>1)
+                p=100;
+            for (int i = 0; i < countTest; i++) 
+            {
+                N=r.nextInt(9*p)+p;                
+                L=N;
+                double range = 10;
+                double[] system = new double[N *2*L + 1];      
+                double[] f = new double[N+1];      
+                double[] solution = new double[N+1];
+                double[] x = new double[N+1];
+                generateSystem(N, range, system);
+                generateXInRange(x, range);
+                generateFVector(N, f, system, x);
+                Haleckiy(N, L, system, f, solution);
+                sum+=getAvg(N, solution, x);
+            }           
+            System.out.println(String.format("%d | %e",N,sum/countTest));
+        }
+    }
+    static void badMatrixTest()
+    {
         
     }
     static  void Haleckiy(int N,int L,double[] system, double[] f, double[] solution)
