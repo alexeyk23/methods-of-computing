@@ -13,18 +13,18 @@ import java.util.Random;
  * @author admin
  */
 public class lab2 {
-    static int L = 3;
-    static int N = 7;
+    static int L = 2;
+    static int N = 4;
     public static void main(String[] args) 
     {
-        System.out.println("Тесты ленточных матриц");
-        test();
+       System.out.println("Тесты ленточных матриц");
+       test();  
+       int i=10;
+       System.out.println("\nТесты хорошо обусловленных матриц");
+       goodMatrixTest();
         
-        System.out.println("\nТесты хорошо обусловленных матриц");
-        goodMatrixTest();
-        
-        System.out.println("\nТесты плохо обусловленных матриц");
-        badMatrixTest();
+       System.out.println("\nТесты плохо обусловленных матриц");
+       badMatrixTest();
     }
     static void test()    
     {      
@@ -33,9 +33,9 @@ public class lab2 {
         int countTest=10;   
         double sumAvg=0.0;
         int p=10;
-        for (int i = 0; i < 4; i++) 
+        for (int i = 0; i < 2; i++) 
         {
-            if(i>1)
+            if(i==1)
             {
                 p=100;
             }
