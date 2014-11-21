@@ -17,8 +17,14 @@ public class lab2 {
     static int N = 7;
     public static void main(String[] args) 
     {
-        //test();
+        System.out.println("Тесты ленточных матриц");
+        test();
+        
+        System.out.println("\nТесты хорошо обусловленных матриц");
         goodMatrixTest();
+        
+        System.out.println("\nТесты плохо обусловленных матриц");
+        badMatrixTest();
     }
     static void test()    
     {      
@@ -100,7 +106,56 @@ public class lab2 {
     }
     static void badMatrixTest()
     {
+        N=10;
+        L=N;
+        Random r= new Random();
+        for (int i = 0; i < 2; i++) {
+            N = r.nextInt(90)+10;
+            L=N;            
+            for (int pow = 2; pow < 8; pow+=2) 
+            {
+                double[] system=genBadMatrix(N, pow);
+                double[] f = new double[N+1];      
+                double[] solution = new double[N+1];
+                double[] x = new double[N+1];
+                generateXInRange(x, 10);
+                generateFVector(N, f, system, x);
+                Haleckiy(N, L, system, f, solution);
+                System.out.println(String.format("%d | %d | %e", pow,N,getAvg(N, solution, x)));
+            }
+        }
         
+    }
+    static double[] genBadMatrix(int N, int pow)
+    {
+        double[] badL = new double[N*N*2+1];
+        double[] badV = new double[N*N*2+1];
+        double[] badM = new double[N*N*2+1];
+        double range =10;
+        Random r = new Random();
+        for (int i = 1; i <= N; i++) {
+            for (int j = 1; j <= i; j++) {
+                badL[getIndex(i, j)] = (double)(r.nextDouble() * 2 * range - range);
+                badV[getIndex(j, i)] = (double)(r.nextDouble() * 2 * range - range);
+            }
+        }
+        double p = Math.pow(10, -pow);
+        for (int i = 1; i <= N; i++) 
+        {
+            badL[getIndex(i, i)]*=p;
+            badV[getIndex(i, i)]*=p;
+        }
+        for (int i = 1; i <= N; i++)
+            {
+                for (int j = 1; j <= N; j++)
+                {
+                    double s =0;
+                    for (int k = 1; k <= N; k++)
+                           s+=badL[getIndex(i, k)]*badV[getIndex(k, j)];
+                    badM[getIndex(i, j)]=s;
+                }
+            }
+        return badM;
     }
     static  void Haleckiy(int N,int L,double[] system, double[] f, double[] solution)
     {
