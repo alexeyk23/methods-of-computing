@@ -171,7 +171,7 @@ public class lab2 {
                 arrayB[getIndex(i, j)]=s;
             }
             for (int i = j + 1; i <= kN(j); i++) {                
-                 double s = system[getIndex(j, i)];
+                double s = system[getIndex(j, i)];
                 for (int k = k0(i); k <= j - 1; k++) {                    
                     s-=arrayB[getIndex(j,k)]*arrayC[getIndex(k, i)];
                 }              
@@ -242,22 +242,19 @@ public class lab2 {
     public static int getIndex(int i,int j)
     {
         return i+N*(j-i+L);
-    }            
-           
+    }                       
     public static int k0(int index) {
         if (index <= L) {
             return 1;
         }
         return index - L + 1;
     }
-
     public static int kN(int index) {
         if (index > N - L) {
             return N;
         }
         return index + L - 1;
     }
-
     public static int jStar(int j, int i) {
         return j - i + L;
     }
