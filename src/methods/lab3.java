@@ -13,17 +13,6 @@ public class lab3
 {
     public static void main(String[] args)
     {
-        /*double [][] a = new double[N][N];
-        generate(a, 2);
-        double epsL = Math.pow(10, -5);
-        int M =50;
-        Solve(a, epsL, epsL, lambda1, x1, M);
- 
-        System.out.println(lambdaAnswer+" "+lambda2+" "+lambda1);
-        System.out.println(countItera);
-        for (int i = 0; i < N; i++) {
-            System.out.println(xSolve[i]+" "+x2[i]+" "+x1[i]);
-        }*/
         test();
     }
     static void  test()
@@ -68,7 +57,7 @@ public class lab3
                                avgVector-=av;
                                avgR-=r;
                                avgCountIter-=countItera;
-                           }                              
+                           }                        
                        }
                        System.out.println(String.format("%d | %f | %e | %e    |   %e    |   %e   | %d",
                                N, range[k], epsilon[l], avgLambda / countTest, avgVector / countTest, avgR / countTest, (int) avgCountIter / countTest));
@@ -120,7 +109,7 @@ public class lab3
  
         Haleckiy(a, f, x2);
         double lambda21=0,
-                lambda22=1/multiply(x2, v2);
+               lambda22=1/multiply(x2, v2);
         do
         {
             lambda21=lambda22;
@@ -268,10 +257,9 @@ public class lab3
         Arrays.fill(solution, 0);
         double[][] b = new double[N][N],
                 c = new double[N][N];
-        for (int i = 0; i < N; i++)
-            c[i][i] = 1;
         for (int i = 0; i < N; i++) {
             b[i][0]=a[i][0];
+            c[i][i] = 1;
         }
  
         for (int j = 0; j < N; j++)
@@ -313,7 +301,7 @@ public class lab3
   }
     public static double Norma(double[] x)
     {
-        double res =0;
+        double res = 0;
         for (int i = 0; i < x.length; i++)
         {
             double xi=x[i];
